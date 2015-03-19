@@ -60,5 +60,5 @@ def getBeats(filename):
 
         return (features['meta']['bpm'], features['meta']['duration'])
 
-print getBeats("alive.mp3")
-print getBeats("still_corners.mp3")
+print getBeats("jump.mp3")
+print getBeats("alpha.mp3")
