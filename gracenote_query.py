@@ -66,4 +66,16 @@ def getBeats(filename):
         # print the bpm
         # print features['timeline']['beat']
 
-        return (features['meta']['bpm'], features['meta']['duration'])
+	hasSkipped = False
+	list = []
+	prev = features['timeline']['beat'][0]['time']
+	for item in features['timeline']['beat']:
+		if len(list) == 0 and not hasSkipped:
+			hasSkipped = True
+			continue
+		list.append((prev, item['time']))
+		prev = item['time']
+
+        return (features['meta']['bpm'], features['meta']['duration'], list)
+
+print getBeats("alive.mp3")
