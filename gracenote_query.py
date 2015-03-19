@@ -58,6 +58,11 @@ def getIntro(features):
     for item in features['timeline']['segment']:
 	time = min(time, int(item['end']))
 
+    beats = sorted(getBeats(features)[2])
+    for beat in beats:
+	if beat[0] > time:
+	    return beat[0]
+    
     return time
 
 def getOutro(features):
@@ -65,4 +70,9 @@ def getOutro(features):
     for item in features['timeline']['segment']:
         time = max(time, int(item['start']))
 
+    beats = reversed(sorted(getBeats(features)[2]))
+    for beat in beats:
+	if beat[1] < time:
+	    return beat[1] 
+    
     return time
