@@ -1,7 +1,7 @@
 import json
 import requests
 
-def getSegments(filename):
+def getFeatures(filename):
     # url2 = 'http://devapi.gracenote.com/timeline/api/1.0/audio/extract/'
     url = 'http://odp-server-env-xpubununej.elasticbeanstalk.com/api/1.0/audio/extract/'
 
@@ -10,22 +10,29 @@ def getSegments(filename):
     url = 'http://devapi.gracenote.com/timeline/api/1.0/audio/features/'
 
     # print req.text
+
+    print 'pushing song audio'
     while True:
         try:
-            audio_id = req.json()['audio_id'] 
+            audio_id = req.json()['audio_id']
             break
         except KeyError:
-            continue 
+           continue
+    print 'pushed audio'
     req = requests.get(url + audio_id)
     data = req.json()
-    while data['job_status']!='1':
-        req = requests.get(url + audio_id)
-        data = req.json()
-    features = json.loads(data['features'])
-    # print features
-    # print the bpm
-    # print features['timeline']['segment']
+    print 'waiting for job to finish....'
+    try:
+        while data['job_status']!='1':
+            req = requests.get(url + audio_id)
+            data = req.json()
+    except KeyError:
+        print data
+    print 'job finished!'
+    features = json.loads(data['features'])    
+    return features
 
+def getSegments(features):
     # make the array of tuples
     list = []
     for item in features['timeline']['segment']:
@@ -33,39 +40,7 @@ def getSegments(filename):
 
     return list
 
-def getBeats(filename):
-        # url2 = 'http://devapi.gracenote.com/timeline/api/1.0/audio/extract/'
-        url = 'http://odp-server-env-xpubununej.elasticbeanstalk.com/api/1.0/audio/extract/'
-
-        req = requests.post(url, files={"audio_file": open(filename, 'rb')})
-
-        url = 'http://devapi.gracenote.com/timeline/api/1.0/audio/features/'
-
-        # print req.text
-        
-        print 'pushing song audio'
-        while True:
-            try:
-                audio_id = req.json()['audio_id']
-                break
-            except KeyError:
-               continue
-        print 'pushed audio'
-        req = requests.get(url + audio_id)
-        data = req.json()
-        print 'waiting for job to finish....'
-        try:
-            while data['job_status']!='1':
-                req = requests.get(url + audio_id)
-                data = req.json()
-        except KeyError:
-            print data
-        print 'job finished!'
-        features = json.loads(data['features'])
-        # print features
-        # print the bpm
-        # print features['timeline']['beat']
-
+def getBeats(features):
 	hasSkipped = False
 	list = []
 	prev = features['timeline']['beat'][0]['time']
@@ -77,3 +52,28 @@ def getBeats(filename):
 		prev = item['time']
 
         return (features['meta']['bpm'], features['meta']['duration'], list)
+
+def getIntro(filename):
+    url = 'http://odp-server-env-xpubununej.elasticbeanstalk.com/api/1.0/audio/extract/'
+
+    req = requests.post(url, files={"audio_file": open(filename, 'rb')})
+
+    url = 'http://devapi.gracenote.com/timeline/api/1.0/audio/features/'
+
+    while True:
+        try:
+            audio_id = req.json()['audio_id']
+            break
+        except KeyError:
+            continue
+    req = requests.get(url + audio_id)
+    data = req.json()
+    while data['job_status']!='1':
+        req = requests.get(url + audio_id)
+        data = req.json()
+    features = json.loads(data['features'])
+
+    for item in features['timeline']['segment']:
+        list.append((item['start'], item['end'], item['label']))
+
+    return list
