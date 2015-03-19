@@ -59,3 +59,6 @@ def getBeats(filename):
         # print features['timeline']['beat']
 
         return (features['meta']['bpm'], features['meta']['duration'])
+
+print getBeats("alive.mp3")
+print getBeats("still_corners.mp3")
