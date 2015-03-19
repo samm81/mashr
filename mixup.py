@@ -1,3 +1,4 @@
+import sys
 from pydub import AudioSegment
 from gracenote_query import getBeats, getFeatures, getIntro, getOutro
 
@@ -47,8 +48,10 @@ def export (song, name):
 #segments1 = [5, 11]
 #segments2 = [20, 26]
 #mixup(path1, path2, segments1, segments2)
-path1 = "alpha.mp3"
-path2 = "jump.mp3"
+#path1 = "alpha.mp3"
+#path2 = "jump.mp3"
+path1 = sys.argv[1]
+path2 = sys.argv[2]
 print 'loaded and alive'
 print 'song 1 is', path1
 print 'song 2 is', path2
