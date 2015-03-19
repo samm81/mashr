@@ -12,7 +12,7 @@ songName2 = ''
 @app.route("/")
 def hello():
 	#return "hello world!"
-	if os.path.exists('/static/thisisntevenmyfinalform.mp3'):
+	if os.path.exists('static/thisisntevenmyfinalform.mp3'):
 		os.remove("static/thisisntevenmyfinalform.mp3")
 	return render_template('index.html')
 
@@ -27,15 +27,19 @@ def loading():
 		f.save('song2.mp3')
 	return render_template('loading.html')
 
+@app.route("/song_done")
+def load_song():
+	mix_from_paths('song1.mp3','song2.mp3')
+	return "Loaded!"
+
 @app.route("/download")
 def download():
-	mix_from_paths('song1.mp3','song2.mp3')
 	return render_template('download.html')
-
-if __name__ == "__main__":
-	app.run()
 
 @app.route("/info")
 def info():
 	print getVerbal(getFeedback(songName1, songName2))
 	return ''
+
+if __name__ == "__main__":
+	app.run()
