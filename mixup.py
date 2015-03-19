@@ -5,7 +5,7 @@ from gracenote_query import getBeats, getFeatures, getIntro, getOutro
 CROSSFADE = 0
 FADE_DURATION = 5000
 
-def mixup (path1, path2, beats1, beats2, introTime, outroTime):
+def mixup (path1, path2, beats1, beats2):
 	song1 = getSong(path1)
 	song2 = getSong(path2)
 
@@ -45,13 +45,6 @@ def mix_from_paths(path1, path2):
 	print 'recieved beats for song 2'
 
 	print 'creating the mashup!'
-	introTime = getIntro(features1)
-	print 'introTime:', introTime
-	outroTime = getOutro(features2)
-	print 'outroTime:', outroTime
 
-	export(mixup(path1, path2, beats1, beats2, introTime, outroTime), "static/thisisntevenmyfinalform.mp3")
+	export(mixup(path1, path2, beats1, beats2), "static/thisisntevenmyfinalform.mp3")
 	print 'mashup created - all done'
-
-#path1 = sys.argv[1]
-#path2 = sys.argv[2]
