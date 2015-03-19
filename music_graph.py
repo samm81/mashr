@@ -45,7 +45,7 @@ def getVerbal(valid):
     bad = re.sub(r", $", ".", bad)
     bad = re.sub(r", (?=\w+\.)", " and ", bad)
 
-    total = (good if gc > 0 else "") + "\n" + (bad if bc > 0 else "")
+    total = (good if gc > 0 else "") + "\n" + (bad if bc > 0 else "") + "\n" + "Due to these "+("similarities, " if gc > bc else "conflicts, ")+"these two songs " + ("will " if gc > bc else "may not ") + "mash well together."
     return total
  
 print getVerbal(getFeedback("alive", "party")) 
