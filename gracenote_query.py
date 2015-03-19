@@ -53,27 +53,16 @@ def getBeats(features):
 
         return (features['meta']['bpm'], features['meta']['duration'], list)
 
-def getIntro(filename):
-    url = 'http://odp-server-env-xpubununej.elasticbeanstalk.com/api/1.0/audio/extract/'
-
-    req = requests.post(url, files={"audio_file": open(filename, 'rb')})
-
-    url = 'http://devapi.gracenote.com/timeline/api/1.0/audio/features/'
-
-    while True:
-        try:
-            audio_id = req.json()['audio_id']
-            break
-        except KeyError:
-            continue
-    req = requests.get(url + audio_id)
-    data = req.json()
-    while data['job_status']!='1':
-        req = requests.get(url + audio_id)
-        data = req.json()
-    features = json.loads(data['features'])
-
+def getIntro(features):
+    time = 100000000
     for item in features['timeline']['segment']:
-        list.append((item['start'], item['end'], item['label']))
+	time = min(time, int(item['end']))
 
-    return list
+    return time
+
+def getOutro(features):
+    time = 0 
+    for item in features['timeline']['segment']:
+        time = max(time, int(item['start']))
+
+    return time
