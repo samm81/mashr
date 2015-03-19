@@ -5,10 +5,7 @@ def getSegments(filename):
 	url2 = 'http://devapi.gracenote.com/timeline/api/1.0/audio/extract/'
 	url = 'http://odp-server-env-xpubununej.elasticbeanstalk.com/api/1.0/audio/extract/'
 
-	req = requests.post(url, files={
-                                  "audio_file": open(filename, 'rb')
-                               }
-	)
+	req = requests.post(url, files={"audio_file": open(filename, 'rb')})
 
 	url = 'http://devapi.gracenote.com/timeline/api/1.0/audio/features/'
 
@@ -35,5 +32,3 @@ def getSegments(filename):
 		list.append((item['start'], item['end'], item['label']))
 
 	return list
-
-print getSegments('clean.mp3')
