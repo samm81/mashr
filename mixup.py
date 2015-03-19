@@ -11,8 +11,10 @@ def mixup (path1, path2, beats1, beats2, introTime, outroTime):
 	segments1 = beats1[2]
 	segments2 = beats2[2]
 
-	song = AudioSegment.empty()
-	for i, (time1, time2) in enumerate(zip(segments1, segments2)):
+	song = song1[:introTime*1000 + 1]
+
+	i = 0
+	for time1, time2 in zip(segments1, segments2):
 		if time1[0] < introTime:
 			continue;
 		elif time2[1] > outroTime:
@@ -22,21 +24,14 @@ def mixup (path1, path2, beats1, beats2, introTime, outroTime):
 		else:
 			segment = song2[time2[0]*1000 : time2[1]*1000]
 
-		if i is 0:
-			song = segment
-		else:
-			song = song.append(segment, crossfade=CROSSFADE)
+		song = song.append(segment, crossfade=CROSSFADE)
+		i += 1
 
+	song = song.append(song2[outroTime*1000:])
 	return song
 
 def getSong(path):
 	return AudioSegment.from_mp3(path)
-
-def introSong(song, endIntroTime):
-	return song[:endIntroTime*1000]
-def outroSong(song, begOutroTime):
-	return song[begOutroTime*1000:]
-
 
 def export (song, name):
 	song.export(name, format="mp3")
@@ -72,9 +67,9 @@ print 'recieved beats for song 2'
 
 print 'creating the mashup!'
 introTime = getIntro(features1)
-intro = introSong(getSong(path1), introTime)
+print 'introTime:', introTime
 outroTime = getOutro(features2)
-outro = outroSong(getSong(path2), outroTime)
+print 'outroTime:', outroTime
 
-export(intro.append(mixup(path1, path2, beats1, beats2, introTime, outroTime)).append(outro), "thisisntevenmyfinalform.mp3")
+export(mixup(path1, path2, beats1, beats2, introTime, outroTime), "thisisntevenmyfinalform.mp3")
 print 'mashup created - all done'
