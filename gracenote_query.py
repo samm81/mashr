@@ -76,3 +76,6 @@ def getOutro(features):
 	    return beat[1] 
     
     return time
+
+def isMatch(f1, f2):
+   return abs(int(getBeats(f1)[0]) - int(getBeats(f2)[0])) < 10

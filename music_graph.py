@@ -7,8 +7,11 @@ def getFeedback(song1, song2):
     tid1 = getTrackID(song1[0], song1[1])
     tid2 = getTrackID(song2[0], song2[1])
 
-    req = (requests.get("http://api.musicgraph.com/api/v2/track/"+tid1+"/acoustical-features?api_key="+API_KEY).json()['data'],
-        requests.get("http://api.musicgraph.com/api/v2/track/"+tid2+"/acoustical-features?api_key="+API_KEY).json()['data']);
+    try:
+	req = (requests.get("http://api.musicgraph.com/api/v2/track/"+tid1+"/acoustical-features?api_key="+API_KEY).json()['data'],
+            requests.get("http://api.musicgraph.com/api/v2/track/"+tid2+"/acoustical-features?api_key="+API_KEY).json()['data']);
+    except KeyError:
+	return 0
 
     print req
    
@@ -23,9 +26,17 @@ def getFeedback(song1, song2):
 def getTrackID(song, artist):
     req = requests.get("http://api.musicgraph.com/api/v2/track/search?api_key="+API_KEY+"&title="+song+"&artist_name="+artist+"&limit=1&fields=id")
     data = req.json()
+    if len(data['data']) == 0:
+	return ""
     return data['data'][0]['id']
    
 def getVerbal(valid):
+    if valid == 0:
+	# stuff = []
+	# thing = stuff[0]
+	# return "Could not find data for both songs."
+	return 0
+
     names = ["tempo", "duration", "intensity", "loudness", "chord"]
     good = "These songs are a good match in "
     bad = "These songs make a poor match in "
@@ -50,4 +61,3 @@ def getVerbal(valid):
     total = (good if gc > 0 else "") + "\n" + (bad if bc > 0 else "") + "\n" + "Due to these "+("similarities, " if gc > bc else "conflicts, ")+"these two songs " + ("will " if gc > bc else "may not ") + "mash well together."
     return total
  
-print getVerbal(getFeedback(("Alive", "Krewella"), ("Live for the Night", "Krewella"))) 
