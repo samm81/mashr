@@ -46,5 +46,5 @@ def mix_from_paths(path1, path2):
 
 	print 'creating the mashup!'
 
-	export(mixup(path1, path2, beats1, beats2), "static/thisisntevenmyfinalform.mp3")
+	export(mixup(path1, path2, beats1, beats2), "output/thisisntevenmyfinalform.mp3")
 	print 'mashup created - all done'
