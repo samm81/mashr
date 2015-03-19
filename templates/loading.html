@@ -30,7 +30,9 @@
 				<h1>Loading mashup...</h1>
 				<p class="lead">Please be patient.</p>
 				<img src="static/loader.gif">
+				<p><div id="info"></div></p>
 			</div>
+
 
 			<footer class="footer">
 			<p>&copy; Mashr 2015</p>
@@ -45,6 +47,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 		<script>
+			$('#info').load("info");
 			$('.container').load("song_done", function () { window.location.replace("download") } );
 		</script>
 

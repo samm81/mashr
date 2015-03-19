@@ -4,6 +4,7 @@ from flask import render_template
 from flask import request
 from mixup import mix_from_paths
 from music_graph import getVerbal, getFeedback
+from mp3_metadata import getSongInfo
 app = Flask(__name__)
 
 songName1 = ''
@@ -38,8 +39,9 @@ def download():
 
 @app.route("/info")
 def info():
-	print getVerbal(getFeedback(songName1, songName2))
-	return ''
+	strings = getVerbal(getFeedback(getSongInfo('song1.mp3'), getSongInfo('song2.mp3')))
+	strings = "According to MusicGraph, " + strings
+	return strings
 
 if __name__ == "__main__":
 	app.run()
