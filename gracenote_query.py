@@ -67,4 +67,3 @@ def getBeats(filename):
         # print features['timeline']['beat']
 
         return (features['meta']['bpm'], features['meta']['duration'])
-
