@@ -13,15 +13,15 @@ def mixup (path1, path2, beats1, beats2):
 	beatLength2 = beats2[1] / numBeats2
 
 	minBeats = min(numBeats1, numBeats2)
-	segments = map((lambda x: (x*beatLength1, (x+1)*beatLength1)), range(int(minBeats)))
-	print 'segments:', segments
+	segments1 = beats1[2]
+	segments2 = beats2[2]
 
 	song = AudioSegment.empty()
-	for i, times in enumerate(segments):
+	for i, (time1, time2) in enumerate(zip(segments1, segments2)):
 		if i % 2 is 0:
-			segment = song1[times[0]*1000 : times[1]*1000]
+			segment = song1[time1[0]*1000 : time1[1]*1000]
 		else:
-			segment = song2[times[0]*1000 : times[1]*1000]
+			segment = song2[time2[0]*1000 : time2[1]*1000]
 
 		if i is 0:
 			song = segment
@@ -40,8 +40,8 @@ def export (song, name):
 #segments1 = [5, 11]
 #segments2 = [20, 26]
 #mixup(path1, path2, segments1, segments2)
-path1 = "alive.mp3"
-path2 = "still_corners.mp3"
+path1 = "jump.mp3"
+path2 = "alpha.mp3"
 print 'loaded and alive'
 print 'song 1 is', path1
 print 'song 2 is', path2
