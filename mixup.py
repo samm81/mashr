@@ -3,6 +3,7 @@ from pydub import AudioSegment
 from gracenote_query import getBeats, getFeatures, getIntro, getOutro
 
 CROSSFADE = 0
+FADE_DURATION = 5000
 
 def mixup (path1, path2, beats1, beats2, introTime, outroTime):
 	song1 = getSong(path1)
@@ -11,24 +12,16 @@ def mixup (path1, path2, beats1, beats2, introTime, outroTime):
 	segments1 = beats1[2]
 	segments2 = beats2[2]
 
-	song = song1[:introTime*1000 + 1]
-
-	i = 0
-	for time1, time2 in zip(segments1, segments2):
-		if time1[0] < introTime:
-			continue;
-		elif time2[1] > outroTime:
-			break;
+	song = AudioSegment.empty()
+	for i, (time1, time2) in enumerate(zip(segments1, segments2)):
 		if i % 2 is 0:
 			segment = song1[time1[0]*1000 : time1[1]*1000]
 		else:
 			segment = song2[time2[0]*1000 : time2[1]*1000]
 
 		song = song.append(segment, crossfade=CROSSFADE)
-		i += 1
 
-	song = song.append(song2[outroTime*1000:])
-	return song
+	return song.fade_in(FADE_DURATION).fade_out(FADE_DURATION)
 
 def getSong(path):
 	return AudioSegment.from_mp3(path)
