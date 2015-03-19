@@ -4,11 +4,13 @@ import requests
 API_KEY = "4462be4a4075b8e837e3789922c66ca0"
 
 def getFeedback(song1, song2):
-    tid1 = getTrackID(song1)
-    tid2 = getTrackID(song2)
+    tid1 = getTrackID(song1[0], song1[1])
+    tid2 = getTrackID(song2[0], song2[1])
 
     req = (requests.get("http://api.musicgraph.com/api/v2/track/"+tid1+"/acoustical-features?api_key="+API_KEY).json()['data'],
         requests.get("http://api.musicgraph.com/api/v2/track/"+tid2+"/acoustical-features?api_key="+API_KEY).json()['data']);
+
+    print req
    
     tempo_match = abs(int(req[0]['tempo']) - int(req[1]['tempo'])) < 10
     duration_match = abs(int(req[0]['duration']) - int(req[1]['duration'])) < 30
@@ -18,8 +20,8 @@ def getFeedback(song1, song2):
 
     return (tempo_match, duration_match, intensity_match, loudness_match, chord_match) 
 
-def getTrackID(song):
-    req = requests.get("http://api.musicgraph.com/api/v2/track/suggest?api_key="+API_KEY+"&prefix="+song+"&limit=1&fields=id")
+def getTrackID(song, artist):
+    req = requests.get("http://api.musicgraph.com/api/v2/track/search?api_key="+API_KEY+"&title="+song+"&artist_name="+artist+"&limit=1&fields=id")
     data = req.json()
     return data['data'][0]['id']
    
@@ -48,4 +50,4 @@ def getVerbal(valid):
     total = (good if gc > 0 else "") + "\n" + (bad if bc > 0 else "") + "\n" + "Due to these "+("similarities, " if gc > bc else "conflicts, ")+"these two songs " + ("will " if gc > bc else "may not ") + "mash well together."
     return total
  
-print getVerbal(getFeedback("alive", "party")) 
+print getVerbal(getFeedback(("Alive", "Krewella"), ("Live for the Night", "Krewella"))) 
