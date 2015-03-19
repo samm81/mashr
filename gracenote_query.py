@@ -77,5 +77,3 @@ def getBeats(filename):
 		prev = item['time']
 
         return (features['meta']['bpm'], features['meta']['duration'], list)
-
-print getBeats("alive.mp3")
