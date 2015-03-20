@@ -32,10 +32,10 @@ def getTrackID(song, artist):
    
 def getVerbal(valid):
     if valid == 0:
-	# stuff = []
-	# thing = stuff[0]
+	stuff = []
+	thing = stuff[0]
 	# return "Could not find data for both songs."
-	return 0
+	# return 0
 
     names = ["tempo", "duration", "intensity", "loudness", "chord"]
     good = "These songs are a good match in "
