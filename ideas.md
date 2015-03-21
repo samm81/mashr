@@ -1,3 +1,4 @@
+# Ideas
 1. Add slider to change how many beats each song gets before changing songs
 2. Poll for people to rate how good different mashups are
 3. Segment songs by different parts, and only mashup parts of the songs that don't contain vocals (since vocal mashups don't work well)
