@@ -24,7 +24,7 @@ def getFeedback(song1, song2):
     return (tempo_match, duration_match, intensity_match, loudness_match, chord_match) 
 
 def getTrackID(song, artist):
-    req = requests.get("http://api.musicgraph.com/api/v2/track/search?api_key="+API_KEY+"&title="+song+"&artist_name="+artist+"&limit=1&fields=id")
+    req = requests.get("http://api.musicgraph.com/api/v2/track/search?api_key="+API_KEY+"&title="+song+"&limit=1&fields=id")
     data = req.json()
     if len(data['data']) == 0:
 	return ""
@@ -32,25 +32,26 @@ def getTrackID(song, artist):
    
 def getVerbal(valid):
     if valid == 0:
+	print ":("
 	stuff = []
 	thing = stuff[0]
 	# return "Could not find data for both songs."
 	# return 0
 
     names = ["tempo", "duration", "intensity", "loudness", "chord"]
-    good = "These songs are a good match in "
+    good = "these songs are a good match in "
     bad = "These songs make a poor match in "
     
     gc = 0
     bc = 0
 
     for i in range(0, 5):
-	if valid[i]:
-	    gc += 1
-	    good += names[i]+", "
-	else:
-	    bc += 1
-	    bad += names[i]+", "
+        if valid[i]:
+            gc += 1
+            good += names[i]+", "
+        else:
+            bc += 1
+            bad += names[i]+", "
 
     good = re.sub(r", $", ".", good) 
     good = re.sub(r", (?=\w+\.)", " and ", good)
