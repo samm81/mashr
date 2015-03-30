@@ -2,10 +2,15 @@ import os
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import copy_current_request_context
+from flask.ext.socketio import SocketIO, emit
 from mixup import mix_from_paths
 from music_graph import getVerbal, getFeedback
 from mp3_metadata import getSongInfo
+from threading import Thread
+
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 
 songName1 = ''
@@ -14,8 +19,8 @@ songName2 = ''
 @app.route("/")
 def hello():
 	#return "hello world!"
-	if os.path.exists('static/thisisntevenmyfinalform.mp3'):
-		os.remove("static/thisisntevenmyfinalform.mp3")
+	#if os.path.exists('static/thisisntevenmyfinalform.mp3'):
+	#	os.remove("static/thisisntevenmyfinalform.mp3")
 	return render_template('index.html')
 
 @app.route("/loading", methods=['GET','POST'])
@@ -29,10 +34,14 @@ def loading():
 		f.save('song2.mp3')
 	return render_template('loading.html')
 
-@app.route("/song_done")
-def load_song():
-	mix_from_paths('song1.mp3','song2.mp3')
-	return "Loaded!"
+@socketio.on('connect', namespace='/song_done')
+def mash():
+    @copy_current_request_context
+    def load_song():
+        mix_from_paths('song1.mp3','song2.mp3')
+        emit('song done', {'data': 'the song has been created'})
+    thread = Thread(target = load_song, args=())
+    thread.start()
 
 @app.route("/download")
 def download():
@@ -45,5 +54,5 @@ def info():
 	return strings
 
 if __name__ == "__main__":
-	app.run()
+	socketio.run(app)
 

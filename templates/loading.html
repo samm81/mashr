@@ -16,7 +16,13 @@
 
 {% block scripts %}
 <script>
-	$('#info').load("info");
-	$('.container').load("song_done", function () { window.location.replace("download") } );
+    $(function() {
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/song_done');
+        socket.on('song done', function(msg){
+            window.location.replace('download');    
+        });
+    });
+	//$('#info').load("info");
+	//$('.container').load("song_done", function () { window.location.replace("download") } );
 </script>
 {% endblock %}
