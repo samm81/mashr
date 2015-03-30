@@ -29,7 +29,7 @@ def getSong(path):
 def export (song, name):
 	song.export(name, format="mp3")
 
-def mix_from_paths(path1, path2):
+def mix_from_paths(path1, path2, outputName):
 	print 'loaded and alive'
 	print 'song 1 is', path1
 	print 'song 2 is', path2
@@ -46,5 +46,5 @@ def mix_from_paths(path1, path2):
 
 	print 'creating the mashup!'
 
-	export(mixup(path1, path2, beats1, beats2), "static/thisisntevenmyfinalform.mp3")
+	export(mixup(path1, path2, beats1, beats2), "static/" + outputName)
 	print 'mashup created - all done'
