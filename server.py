@@ -46,6 +46,7 @@ def mash():
 
 @app.route("/download")
 def download():
+	session.pop('id', None)
 	return render_template('download.html', id=session['id'])
 
 @app.route("/info")
@@ -55,5 +56,6 @@ def info():
 	return strings
 
 if __name__ == "__main__":
-    app.secret_key = 'A9fjs@!]jki.`sdf09ulLKJ089LJh'
-    socketio.run(app)
+    # The key used for encrypting the session cookie
+    app.secret_key = '?\xc8\xcb\xe9\xf7\xe1^n[\xb5\x98\xf8o\x8c:\xe2%V\x80\x05=\xad\xa6\xb7'
+    socketio.run(app, host='0.0.0.0')
