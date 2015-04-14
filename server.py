@@ -24,7 +24,6 @@ def hello():
     resp.set_cookie('id', id)
     print 'id:', id
     return resp
-    #return render_template('index.html')
 
 @app.route("/loading", methods=['GET','POST'])
 def loading():
@@ -53,7 +52,6 @@ def mash():
 @app.route("/download")
 def download():
     userId = request.cookies.get('id')
-    #session.pop('id', None])
     return render_template('download.html', id=userId)
 
 @app.route("/info")
@@ -64,6 +62,4 @@ def info():
     return strings
 
 if __name__ == "__main__":
-    # The key used for encrypting the session cookie
-    #app.secret_key = '?\xc8\xcb\xe9\xf7\xe1^n[\xb5\x98\xf8o\x8c:\xe2%V\x80\x05=\xad\xa6\xb7'
     socketio.run(app, host='0.0.0.0')
