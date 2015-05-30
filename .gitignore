@@ -1,0 +1,4 @@
+# ignore mp3s
+*.mp3
+# ignore compiled python files
+*.pyc
