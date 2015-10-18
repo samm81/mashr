@@ -62,4 +62,5 @@ def info():
     return strings
 
 if __name__ == "__main__":
-    socketio.run(app, host='0.0.0.0')
+    print "running on port 80"
+    socketio.run(app, host='0.0.0.0', port=80)
