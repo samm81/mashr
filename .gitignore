@@ -2,3 +2,5 @@
 *.mp3
 # ignore compiled python files
 *.pyc
+# amazon ec2
+*.pem
