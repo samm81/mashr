@@ -65,13 +65,10 @@ def info():
 if __name__ == "__main__":
 	host = '0.0.0.0'
 	port = 8000
-	app.debug = True
 	level = logging.DEBUG
 	
-#	logger = logging.getLogger(__name__)
 	file_handler = logging.FileHandler('log', mode='w')
 	file_handler.setLevel(level)
-#	logger.addHandler(file_handler)
 	app.logger.addHandler(file_handler)
 	logging.getLogger("werkzeug").addHandler(file_handler)
 	

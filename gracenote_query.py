@@ -2,8 +2,7 @@ import json
 import requests
 
 def getFeatures(filename):
-    # url2 = 'http://devapi.gracenote.com/timeline/api/1.0/audio/extract/'
-    url = 'http://odp-server-env-xpubununej.elasticbeanstalk.com/api/1.0/audio/extract/'
+    url = 'http://devapi.gracenote.com/timeline/api/1.0/audio/extract/'
 
     req = requests.post(url, files={"audio_file": open(filename, 'rb')})
 
