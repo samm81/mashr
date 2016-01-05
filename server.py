@@ -1,4 +1,5 @@
 import os
+import sys
 from flask import Flask, render_template, request, copy_current_request_context, make_response
 from flask.ext.socketio import SocketIO, emit
 from mixup import mix_from_paths
@@ -62,15 +63,14 @@ def info():
 	strings = "According to MusicGraph, " + strings
 	return strings
 
+@app.before_first_request
+def setup_logging():
+	app.logger.addHandler(logging.StreamHandler(sys.stdout))
+	app.logger.setLevel(logging.DEBUG)
+	app.logger.info("started running")
+
 if __name__ == "__main__":
 	host = '0.0.0.0'
 	port = 8000
-	level = logging.DEBUG
 	
-	file_handler = logging.FileHandler('log', mode='w')
-	file_handler.setLevel(level)
-	app.logger.addHandler(file_handler)
-	logging.getLogger("werkzeug").addHandler(file_handler)
-	
-	app.logger.info("started running with host {} on port {}, debug = {}".format(host, port, app.debug))
 	socketio.run(app, host=host, port=port)
