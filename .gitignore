@@ -1,5 +1,5 @@
-# ignore mp3s
-*.mp3
+# ignore uploaded mp3s
+static/*.mp3
 # ignore compiled python files
 *.pyc
 # amazon ec2
